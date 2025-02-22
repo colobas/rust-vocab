@@ -14,6 +14,7 @@ impl Vocab {
     fn new() -> Self {
         Vocab {
             map: Mutex::new(HashMap::new()),
+            default_index: 0,
         }
     }
 
