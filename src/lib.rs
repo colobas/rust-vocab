@@ -43,6 +43,11 @@ impl Vocab {
         map.remove(&key);
     }
 
+    fn items(&self) -> Vec<(String, i32)> {
+        let map = self.map.lock().unwrap();
+        map.iter().map(|(k, v)| (k.clone(), *v)).collect()
+    }
+
     fn set_default_index(&mut self, default_index: i32) {
         self.default_index = default_index;
     }
