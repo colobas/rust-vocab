@@ -73,15 +73,20 @@ jobs:
             target: ppc64le
     steps:
       - uses: actions/checkout@v4
-      - name: Install cross-compilation toolchains
+      - name: Install cross-compilation toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            gcc-multilib \
-            crossbuild-essential-arm64 \
-            crossbuild-essential-armhf \
-            gcc-s390x-linux-gnu \
-            gcc-powerpc64le-linux-gnu
+          if [ "${{ matrix.platform.target }}" = "x86" ] || [ "${{ matrix.platform.target }}" = "x86_64" ]; then
+            sudo apt-get install -y gcc-multilib
+          elif [ "${{ matrix.platform.target }}" = "aarch64" ]; then
+            sudo apt-get install -y crossbuild-essential-arm64
+          elif [ "${{ matrix.platform.target }}" = "armv7" ]; then
+            sudo apt-get install -y crossbuild-essential-armhf
+          elif [ "${{ matrix.platform.target }}" = "s390x" ]; then
+            sudo apt-get install -y gcc-s390x-linux-gnu
+          elif [ "${{ matrix.platform.target }}" = "ppc64le" ]; then
+            sudo apt-get install -y gcc-powerpc64le-linux-gnu
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
